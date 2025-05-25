@@ -1,3 +1,405 @@
-<script>
-    window.location.href = "https://0d3d-123-21-208-63.ngrok-free.app"; 
-</script>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Minecraft Server - Game Web</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background: url('https://hoanghamobile.com/tin-tuc/wp-content/uploads/2024/06/anh-minecraft.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #f9f9f9;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    /* Button custom */
+    .btn-primary {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.6);
+      transition: all 0.3s ease;
+      font-weight: 600;
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #f59e0b, #b45309);
+      box-shadow: 0 6px 20px rgba(180, 83, 9, 0.8);
+      transform: translateY(-3px);
+    }
+    /* Card style */
+    .card {
+      background: rgba(34, 139, 34, 0.85);
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+      border: 3px solid #7c4a00;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 45px rgba(0, 0, 0, 0.75);
+    }
+    /* Section Title */
+    .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #fbbf24;
+      text-shadow: 0 0 10px #fbbf24;
+      margin-bottom: 1rem;
+    }
+    /* Footer style */
+    footer {
+      background-color: rgba(22, 77, 22, 0.9);
+      text-align: center;
+      padding: 1rem 0;
+      font-size: 0.875rem;
+      color: #e0e0e0;
+      letter-spacing: 1px;
+      user-select: none;
+      margin-top: 40px;
+    }
+    /* Modal Background */
+    .modal-bg {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0,0,0,0.75);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 1000;
+    }
+    .modal-bg.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    /* Modal Content */
+    .modal-content {
+      background: rgba(34, 139, 34, 0.95);
+      border-radius: 12px;
+      padding: 2rem 3rem;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.8);
+      color: #fff;
+      position: relative;
+    }
+    /* Close Button */
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 1.5rem;
+      font-weight: 700;
+      cursor: pointer;
+      color: #fbbf24;
+      transition: color 0.3s ease;
+    }
+    .close-btn:hover {
+      color: #fff;
+    }
+    /* Forms */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #333;
+    }
+    input::placeholder {
+      color: #999;
+    }
+    button.submit-btn {
+      margin-top: 1rem;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      padding: 0.8rem 1rem;
+      border-radius: 8px;
+      border: none;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      color: black;
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.7);
+      transition: all 0.3s ease;
+    }
+    button.submit-btn:hover {
+      background: linear-gradient(135deg, #f59e0b, #b45309);
+      box-shadow: 0 6px 18px rgba(180, 83, 9, 0.8);
+      transform: translateY(-3px);
+    }
+    /* Toggle Link */
+    .toggle-link {
+      margin-top: 1rem;
+      text-align: center;
+      cursor: pointer;
+      color: #fbbf24;
+      font-weight: 600;
+      user-select: none;
+      transition: color 0.3s ease;
+    }
+    .toggle-link:hover {
+      color: #fff;
+    }
+    /* Đặt menu trên mobile kiểu dropdown */
+#navMenu.mobile-active {
+  display: flex !important;
+  flex-direction: column;
+  position: absolute;
+  top: 60px; /* chiều cao header */
+  right: 10px;
+  background: rgba(22, 77, 22, 0.95);
+  border-radius: 10px;
+  padding: 1rem 2rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+  z-index: 1100;
+  width: 150px;
+}
+
+/* Menu item cách nhau khi bật */
+#navMenu.mobile-active > * {
+  margin-bottom: 1rem;
+}
+
+/* Ẩn nút hamburger trên màn hình lớn */
+@media (min-width: 768px) {
+  #hamburgerBtn {
+    display: none;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <audio id="background-audio" loop>
+    <source src="minecraft.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+  <script>
+    function playAudio() {
+      var audio = document.getElementById("background-audio");
+      audio.volume = 0.4; // Đặt âm lượng ban đầu là 50%
+      audio.play().catch(function(error) {
+        console.log("Lỗi phát âm thanh: ", error);
+      });
+      // Ẩn thông báo sau khi phát nhạc
+      document.getElementById("audio-prompt").style.display = "none";
+    }
+
+    // Phát nhạc khi lăn chuột (desktop) hoặc vuốt (mobile)
+document.addEventListener('click', playAudio);
+document.addEventListener('touchstart', playAudio);
+
+  </script>
+  <!-- Navbar -->
+<header class="flex justify-between items-center px-6 py-4 bg-green-900 bg-opacity-90 shadow-lg sticky top-0 z-50">
+  <h1 class="text-3xl font-extrabold text-yellow-400 drop-shadow-lg">🌍 Minecraft Server</h1>
+  <!-- Hamburger menu button -->
+  <button id="hamburgerBtn" class="block md:hidden focus:outline-none" aria-label="Toggle menu">
+    <svg class="w-8 h-8 text-yellow-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="3" y1="7" x2="21" y2="7" />
+      <line x1="3" y1="12" x2="21" y2="12" />
+      <line x1="3" y1="17" x2="21" y2="17" />
+    </svg>
+  </button>
+  <!-- Nav menu -->
+  <nav id="navMenu" class="hidden md:flex space-x-8 text-lg font-semibold">
+    <a href="#" class="hover:text-yellow-400 transition">Trang chủ</a>
+    <button id="openLogin" class="hover:text-yellow-400 transition focus:outline-none">Đăng nhập</button>
+    <button id="openRegister" class="hover:text-yellow-400 transition focus:outline-none">Đăng ký</button>
+  </nav>
+</header>
+
+
+  <!-- Hero Section -->
+  <section class="text-center py-32 bg-green-800 bg-opacity-80 mx-8 rounded-xl shadow-2xl mt-12">
+    <h2 class="section-title max-w-4xl mx-auto">Chào mừng đến với máy chủ Minecraft thế hệ mới MINEX.COM</h2>
+    <p class="max-w-3xl mx-auto text-lg md:text-xl mb-10 text-gray-100 drop-shadow-lg">
+      Khai trương server
+    </p>
+    <button class="btn-primary px-12 py-4 rounded-lg text-black text-xl cursor-pointer">Tham gia Ngay</button>
+  </section>
+
+  <!-- Features Section -->
+  <section class="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-7xl mx-auto px-8 py-20">
+    <div class="card">
+      <h3 class="text-yellow-300 text-2xl font-bold mb-4">🎮 Sinh tồn Hardcore</h3>
+      <p>Thách thức sinh tồn cực độ với quái vật và PvP căng thẳng.</p>
+    </div>
+    <div class="card">
+      <h3 class="text-yellow-300 text-2xl font-bold mb-4">⚒️ Xây dựng sáng tạo</h3>
+      <p>Không giới hạn ý tưởng, bạn có thể tạo mọi công trình mơ ước.</p>
+    </div>
+    <div class="card">
+      <h3 class="text-yellow-300 text-2xl font-bold mb-4">🛡️ Bảo mật tối ưu</h3>
+      <p>Máy chủ ổn định, an toàn, hỗ trợ người chơi 24/7.</p>
+    </div>
+  </section>
+
+  <!-- Server Clusters Section -->
+  <section class="max-w-7xl mx-auto px-8 py-20">
+    <h2 class="section-title text-center mb-12">Chọn cụm server của bạn</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+      <!-- RPG Server Card -->
+      <div class="card cursor-pointer hover:scale-105 transition-transform">
+        <div class="flex items-center space-x-4 mb-6">
+          <img src="https://img.icons8.com/emoji/48/000000/dragon-emoji.png" alt="RPG Icon" />
+          <h3 class="text-yellow-300 text-3xl font-bold">🛡️ RPG</h3>
+        </div>
+        <p class="text-gray-200 leading-relaxed">
+          Tham gia thế giới RPG đa dạng, nhiệm vụ hấp dẫn, chiến đấu cùng quái vật và boss mạnh. Tăng cấp, trang bị và khám phá câu chuyện đầy kịch tính.
+        </p>
+        <button class="btn-primary mt-6 px-8 py-3 rounded-lg text-black font-semibold">Vào RPG</button>
+      </div>
+
+      <!-- Skyblock Server Card -->
+      <div class="card cursor-pointer hover:scale-105 transition-transform">
+        <div class="flex items-center space-x-4 mb-6">
+          <img src="https://img.icons8.com/emoji/48/000000/island-emoji.png" alt="Skyblock Icon" />
+          <h3 class="text-yellow-300 text-3xl font-bold">☁️ Skyblock</h3>
+        </div>
+        <p class="text-gray-200 leading-relaxed">
+          Bắt đầu với một hòn đảo nhỏ trên trời, thu thập tài nguyên, mở rộng đảo và tạo nên thiên đường riêng của bạn trên không trung.
+        </p>
+        <button class="btn-primary mt-6 px-8 py-3 rounded-lg text-black font-semibold">Vào Skyblock</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal Login -->
+  <div id="modalLogin" class="modal-bg">
+    <div class="modal-content">
+      <span class="close-btn" id="closeLogin">&times;</span>
+      <h3 class="text-2xl font-bold text-yellow-300 mb-6 text-center">Đăng nhập</h3>
+      <form id="loginForm">
+        <input type="text" id="loginUser" placeholder="Tên đăng nhập" required />
+        <input type="password" id="loginPass" placeholder="Mật khẩu" required />
+        <button type="submit" class="submit-btn">Đăng nhập</button>
+      </form>
+      <div class="toggle-link" id="toRegister">Bạn chưa có tài khoản? Đăng ký</div>
+    </div>
+  </div>
+
+  <!-- Modal Register -->
+  <div id="modalRegister" class="modal-bg">
+    <div class="modal-content">
+      <span class="close-btn" id="closeRegister">&times;</span>
+      <h3 class="text-2xl font-bold text-yellow-300 mb-6 text-center">Đăng ký</h3>
+      <form id="registerForm">
+        <input type="text" id="regUser" placeholder="Tên đăng nhập" required minlength="3" />
+        <input type="email" id="regEmail" placeholder="Email" required />
+        <input type="password" id="regPass" placeholder="Mật khẩu" required minlength="6" />
+        <button type="submit" class="submit-btn">Đăng ký</button>
+      </form>
+      <div class="toggle-link" id="toLogin">Bạn đã có tài khoản? Đăng nhập</div>
+    </div>
+  </div>
+
+  <footer>
+    © 2025 Minecraft Server. Bản quyền thuộc về nhóm phát triển.
+  </footer>
+
+  <script>
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+const navMenu = document.getElementById('navMenu');
+
+hamburgerBtn.addEventListener('click', () => {
+  navMenu.classList.toggle('mobile-active');
+});
+
+    // DOM elements
+    const modalLogin = document.getElementById('modalLogin');
+    const modalRegister = document.getElementById('modalRegister');
+    const openLoginBtn = document.getElementById('openLogin');
+    const openRegisterBtn = document.getElementById('openRegister');
+    const closeLoginBtn = document.getElementById('closeLogin');
+    const closeRegisterBtn = document.getElementById('closeRegister');
+    const toRegisterLink = document.getElementById('toRegister');
+    const toLoginLink = document.getElementById('toLogin');
+
+    // Show/hide modal
+    function showModal(modal) {
+      modal.classList.add('active');
+    }
+    function hideModal(modal) {
+      modal.classList.remove('active');
+    }
+
+    // Event listeners
+    openLoginBtn.addEventListener('click', () => {
+      showModal(modalLogin);
+    });
+    openRegisterBtn.addEventListener('click', () => {
+      showModal(modalRegister);
+    });
+    closeLoginBtn.addEventListener('click', () => {
+      hideModal(modalLogin);
+    });
+    closeRegisterBtn.addEventListener('click', () => {
+      hideModal(modalRegister);
+    });
+
+    toRegisterLink.addEventListener('click', () => {
+      hideModal(modalLogin);
+      showModal(modalRegister);
+    });
+    toLoginLink.addEventListener('click', () => {
+      hideModal(modalRegister);
+      showModal(modalLogin);
+    });
+
+    // Close modal on outside click
+    window.addEventListener('click', (e) => {
+      if(e.target === modalLogin) hideModal(modalLogin);
+      if(e.target === modalRegister) hideModal(modalRegister);
+    });
+
+    // Login form submit
+    document.getElementById('loginForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const username = document.getElementById('loginUser').value.trim();
+      const password = document.getElementById('loginPass').value.trim();
+
+      // Demo login validation
+      if(username === 'player1' && password === '123456') {
+        alert(`Đăng nhập thành công! Xin chào ${username}`);
+        hideModal(modalLogin);
+      } else {
+        alert('Tên đăng nhập hoặc mật khẩu không đúng.');
+      }
+    });
+
+    // Register form submit
+    document.getElementById('registerForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const username = document.getElementById('regUser').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const password = document.getElementById('regPass').value.trim();
+
+      // Demo register validation (fake)
+      if(username.length < 3) {
+        alert('Tên đăng nhập phải ít nhất 3 ký tự.');
+        return;
+      }
+      if(password.length < 6) {
+        alert('Mật khẩu phải ít nhất 6 ký tự.');
+        return;
+      }
+      alert(`Đăng ký thành công! Bạn có thể đăng nhập với tên ${username}`);
+      hideModal(modalRegister);
+      showModal(modalLogin);
+    });
+  </script>
+</body>
+</html>
